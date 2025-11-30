@@ -48,8 +48,23 @@ fun CharacterListScreen(
         is ListUiState.Success -> {
             CharacterList(modifier, uiState, onShowDetail)
         }
+        is ListUiState.Error -> {
+            PokemonError(modifier)
+        }
     }
 
+}
+@Composable
+private fun PokemonError(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Se ha producido un error", style = MaterialTheme.typography.titleLarge)
+    }
 }
 
 @Composable

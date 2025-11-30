@@ -22,7 +22,7 @@ class CharacterListViewModel @Inject constructor(
 ): ViewModel() {
 
 
-    private val _uiState: MutableStateFlow<ListUiState > =
+    private val _uiState: MutableStateFlow<ListUiState> =
         MutableStateFlow(value = ListUiState.Initial)
 
     val uiState: StateFlow<ListUiState>
@@ -31,21 +31,24 @@ class CharacterListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _uiState.value = ListUiState.Loading
-            val allCharacter = repository.readAll()
-            val successResponse = ListUiState.Success(
-                allCharacter.asListUiState()
-            )
+            repository.observe().collect { result ->
+                if (result.isSuccess) {
+                    val successResponse = ListUiState.Success(result.getOrNull()!!.asListUiState())
 
-            _uiState.value = successResponse
+                    _uiState.value = successResponse
+                } else {
+                    _uiState.value = ListUiState.Error
+                }
+            }
+
         }
-
     }
-
 }
 
 sealed class ListUiState {
     object Initial: ListUiState()
     object Loading: ListUiState()
+    object Error: ListUiState()
     data class Success(
         val characters: List<ListItemUiState>
     ): ListUiState()

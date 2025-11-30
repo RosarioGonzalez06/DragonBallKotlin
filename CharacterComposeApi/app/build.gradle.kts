@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.serialize)
+
 }
 
 android {
@@ -41,6 +42,10 @@ android {
 }
 
 dependencies {
+    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     //Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)

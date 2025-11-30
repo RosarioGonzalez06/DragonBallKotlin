@@ -40,7 +40,7 @@ class CharacterDetailViewModel @Inject constructor(
             val character = characterRepository.readOne(characterId)
 
             character?.let {
-                _uiState.value = character.toDetailUiState()
+                _uiState.value = character.getOrNull()!!.toDetailUiState()
             }
         }
     }
